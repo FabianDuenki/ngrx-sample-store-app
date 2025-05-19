@@ -1,8 +1,5 @@
 <div class="products-list">
-  @for (
-    productCategory of productCategories$ | async;
-    track productCategory.category
-  ) {
+  @for (productCategory of productsByCategories(); track productCategory.category) {
     <app-product-category
       [categoryName]="productCategory.category | categoryName"
       [products]="productCategory.products"

@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
 import { ShellComponent } from './features/shell/container/shell/shell.component';
+import { productsFeatureKey } from './features/products/state/products.state';
+import { provideState } from '@ngrx/store';
+import { productsReducer } from './features/products/state/products.reducer';
+import * as productsEffects from './features/products/state/products.effect';
+import { provideEffects } from '@ngrx/effects';
 
 export const routes: Routes = [
   {
@@ -12,6 +17,10 @@ export const routes: Routes = [
           import(
             './features/products/container/products/products.component'
           ).then((c) => c.ProductsComponent),
+        providers: [
+          provideState(productsFeatureKey, productsReducer),
+          provideEffects(productsEffects),
+        ],
       },
       {
         path: 'products/:id',
