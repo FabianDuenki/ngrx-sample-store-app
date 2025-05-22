@@ -2,7 +2,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { inject } from '@angular/core';
 import { ProductsService } from '../service/products.service';
 import { catchError, exhaustMap, map, of } from 'rxjs';
-import { ProductsActions } from './products.action';
+import { ProductsActions } from './products.actions';
+import { Router } from '@angular/router';
 
 export const loadProducts$ = createEffect(
   (actions$ = inject(Actions), productsService = inject(ProductsService)) =>
@@ -18,4 +19,13 @@ export const loadProducts$ = createEffect(
       ),
     ),
   { functional: true },
+);
+
+export const navigateToDetail$ = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) =>
+    actions$.pipe(
+      ofType(ProductsActions.navigateToDetail),
+      exhaustMap(({ id }) => router.navigate(['/products', id])),
+    ),
+  { functional: true, dispatch: false },
 );

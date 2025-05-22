@@ -5,7 +5,8 @@ import { CheckoutService } from '../../../../shared/services/checkout.service';
 import { ProductCategoryComponent } from '../../presentational/product-category/product-category.component';
 import { Store } from '@ngrx/store';
 import { selectProductsByCategories } from '../../state/products.selector';
-import { ProductsActions } from '../../state/products.action';
+import { ProductsActions } from '../../state/products.actions';
+import { CheckoutUserActions } from '../../../../shared/checkout/state/checkout.actions';
 
 @Component({
   selector: 'app-products',
@@ -30,6 +31,6 @@ export class ProductsComponent {
   }
 
   onCartClicked(product: Product): void {
-    this.checkoutService.addToCart(product);
+    this.store.dispatch(CheckoutUserActions.addProductToCart({ product }));
   }
 }
