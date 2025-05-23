@@ -1,10 +1,10 @@
 <div class="products-list">
-  @for (productCategory of signalStore.productsByCategory(); track productCategory.category) {
+  @for (productCategory of productsStore.productsByCategory(); track productCategory.category) {
     <app-product-category
       [categoryName]="productCategory.category | categoryName"
       [products]="productCategory.products"
-      (clicked)="signalStore.navigateToDetail($event)"
-      (cartClicked)="onCartClicked($event)"
+      (clicked)="productsStore.navigateToDetail($event)"
+      (cartClicked)="checkoutStore.addProductToCart($event)"
     />
   }
 </div>

@@ -11,11 +11,15 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { exhaustMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ProductsState } from './products.state';
+import {
+  LoadingState,
+  setPending,
+} from '../../../shared/store-features/loading-state.feature';
 
 export function withProductsMethods() {
   return signalStoreFeature(
     {
-      state: type<ProductsState>(),
+      state: type<ProductsState & LoadingState>(),
     },
     withMethods(
       (
@@ -24,14 +28,15 @@ export function withProductsMethods() {
         router = inject(Router),
       ) => ({
         loadProducts: rxMethod<void>(
-          exhaustMap(() =>
-            productsService.loadProducts().pipe(
+          exhaustMap(() => {
+            patchState(store, setPending());
+            return productsService.loadProducts().pipe(
               tapResponse({
                 next: (products) => patchState(store, { products }),
                 error: console.error,
               }),
-            ),
-          ),
+            );
+          }),
         ),
         navigateToDetail: (id: string) => router.navigate(['/products', id]),
       }),
